@@ -19,12 +19,24 @@ class LinkController extends Controller
             'link' => 'required|url'
         ]);
 
-        $key = Str::random(5);
+        $slug = Str::random(5);
 
         Cache::remember(
-            $key,
+            $slug,
             15 * 60,
             fn () => $request->link
         );
+
+        return url("links/{$slug}");
+    }
+
+    public function show($slug)
+    {
+        if (Cache::has($slug)) {
+            return redirect(
+                Cache::get($slug),
+                301
+            );
+        }
     }
 }

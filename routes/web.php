@@ -18,3 +18,4 @@ Route::redirect('/', 'links/create');
 
 Route::get('links/create', [LinkController::class, 'create']);
 Route::post('links', [LinkController::class, 'store']);
+Route::get('links/{slug}', [LinkController::class, 'show']);
