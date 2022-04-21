@@ -50,7 +50,7 @@ class EnvGenerate extends Command
         }
     }
 
-    public function generate()
+    private function generate()
     {
         if ($this->canCopy()) {
             $this->copyEnvExample();
