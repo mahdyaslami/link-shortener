@@ -14,7 +14,7 @@ class EnvGenerate extends Command
      *
      * @var string
      */
-    protected $signature = 'env:generate {--force}';
+    protected $signature = 'env:generate {--force} {--no-error : Prevent return error code.}';
 
     /**
      * The console command description.
@@ -46,7 +46,7 @@ class EnvGenerate extends Command
         } catch (Exception $ex) {
             $this->error($ex->getMessage());
 
-            return 1;
+            return $this->option('no-error') ? 0 : 1;
         }
     }
 
