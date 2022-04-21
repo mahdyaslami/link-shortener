@@ -26,7 +26,7 @@
             type="text"
             name="link"
             value="{{ $url }}"
-            placeholder="https://link.rezero.ir/link-shortener"/>
+            placeholder="https://short.rezero.ir/link-shortener"/>
 
 		<button type="submit"
             class="px-8 rounded-r-lg bg-blue-400  text-gray-800 font-bold p-4

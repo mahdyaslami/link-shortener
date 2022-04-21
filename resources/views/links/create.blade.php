@@ -23,7 +23,7 @@
             border-gray-400 bg-white w-full" 
             type="text"
             name="link"
-            placeholder="https://link.rezero.ir/link-shortener"/>
+            placeholder="https://short.rezero.ir/link-shortener"/>
 
 		<input type="submit"
             class="px-8 rounded-r-lg bg-yellow-400  text-gray-800 font-bold p-4
