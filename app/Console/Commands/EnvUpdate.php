@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Env;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -23,15 +24,6 @@ class EnvUpdate extends Command
      */
     protected $description = 'Update an environment variable.';
 
-    private $envPath;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->envPath = base_path('.env');
-    }
-
     /**
      * Execute the console command.
      *
@@ -52,44 +44,19 @@ class EnvUpdate extends Command
 
     private function update()
     {
-        if (File::exists($this->envPath)) {
-            $this->updateKeyValue();
-        }
-    }
+        if (Env::exists()) {
+            $key = $this->argument('key');
+            $value = $this->argument('value');
 
-    private function updateKeyValue()
-    {
-        $content = $this->getEnv();
-        $key = $this->argument('key');
-        $value = $this->argument('value');
+            if (!Env::keyExists($key)) {
+                throw new Exception("The \"{$key}\" key does not exists.");
+            }
 
-        if (Str::contains($content, $key, true)) {
-            $content = $this->replaceKeyValue(
-                $content,
-                $key,
-                $value
-            );
+            Env::update($key, $value);
 
-            $this->saveEnv($content);
-
-            $this->info("the \"{$key}\" value update to \"{$value}\"");
+            $this->info("The value of \"{$key}\" key updated to \"{$value}\"");
         } else {
-            throw new Exception('key does not exists.');
+            throw new Exception('.env file does not exists.');
         }
-    }
-
-    private function replaceKeyValue($content, $key, $value)
-    {
-        return preg_replace("/({$key}=).*/", "$1\"{$value}\"", $content);
-    }
-
-    private function getEnv()
-    {
-        return File::get($this->envPath);
-    }
-
-    private function saveEnv($content)
-    {
-        File::replace($this->envPath, $content);
     }
 }
