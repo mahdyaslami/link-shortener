@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -38,16 +39,35 @@ class EnvGenerate extends Command
      */
     public function handle()
     {
-        $envPath = base_path('.env');
+        try {
+            $this->generate();
 
-        if (File::exists($envPath) 
-            && !$this->option('force')) {
-            $this->info('.env file exists. if you want to regenerate use --force.');
-        } else {
+            return 0;
+        } catch (Exception $ex) {
+            $this->error($ex->getMessage());
+
+            return 1;
+        }
+    }
+
+    public function generate()
+    {
+        if ($this->canCopy()) {
             $this->copyEnvExample();
         }
+    }
 
-        return 0;
+    private function canCopy()
+    {
+        if ($this->option('force')) {
+            return true;
+        }
+
+        if (File::exists($this->envPath)) {
+            throw new Exception('.env file exists. if you want to regenerate use --force.');
+        }
+
+        return true;
     }
 
     private function copyEnvExample()
@@ -59,8 +79,8 @@ class EnvGenerate extends Command
 
         if ($result) {
             $this->info('.env file generated sucssfully.');
-        } else {
-            $this->error('Failed.');
         }
+
+        throw new Exception('Failed to copy .env.example to .env.');
     }
 }
