@@ -30,7 +30,20 @@ class LinkController extends Controller
             fn () => $request->link
         );
 
-        return url("goto/{$slug}");
+        return redirect(
+            route('links.show', $slug)
+        );
+    }
+
+    public function show($slug)
+    {
+        if (Cache::has($slug)) {
+            return view('links.show', [
+                'url' => route('redirect', $slug)
+            ]);
+        }
+
+        abort(404);
     }
 
     public function redirect($slug)

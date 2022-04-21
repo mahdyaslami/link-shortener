@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'links/create');
 
-Route::get('links/create', [LinkController::class, 'create']);
+Route::get('links/create', [LinkController::class, 'create'])
+    ->name('links.create');
 Route::post('links', [LinkController::class, 'store']);
-Route::get('links/{slug}', [LinkController::class, 'show']);
+Route::get('links/{slug}', [LinkController::class, 'show'])
+    ->name('links.show');
 
-Route::get('goto/{slug}', [LinkController::class, 'redirect']);
+Route::get('goto/{slug}', [LinkController::class, 'redirect'])
+    ->name('redirect');

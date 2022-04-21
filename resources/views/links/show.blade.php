@@ -15,25 +15,42 @@
 </head>
 
 <body style="font-family: Vazirmatn;"
-    class="bg-gray-200 pt-16">
-  	<form class="my-4 mx-auto flex max-w-lg" action="/links" method="POST">
+    class="bg-gray-200 pt-16 px-1">
+  	<div class="my-4 mx-auto flex max-w-lg">
         @csrf
 
-    	<input class="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800
-            border-gray-400 bg-white w-full" 
+    	<input 
+            id="short-link"
+            class="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800
+            border-gray-400 bg-white w-full transition-colors" 
             type="text"
             name="link"
+            value="{{ $url }}"
             placeholder="https://link.rezero.ir/link-shortener"/>
 
-		<input type="submit"
-            class="px-8 rounded-r-lg bg-yellow-400  text-gray-800 font-bold p-4
-            uppercase border-yellow-500 border cursor-pointer"
-            value="کوتاه کن">
-	</form>
+		<button type="submit"
+            class="px-8 rounded-r-lg bg-blue-400  text-gray-800 font-bold p-4
+             border-blue-500 border cursor-pointer whitespace-nowrap"
+             onclick="copyShortLink()">کپی کن</button>
+	</div>
+    
+    <div class="text-center underline">
+        <a href="{{ route('links.create') }}">کوتاه کردن لینک جدید</a>
+    </div>
 
-    @error('link')
-        <div class="text-center text-red-600">{{ $message }}</div>
-    @enderror
+    <script>
+        function copyShortLink() {
+            const input = document.getElementById('short-link')
+            navigator.clipboard.writeText(input.value)
+            input.style.backgroundColor = '#bbf7d0'
+
+            setTimeout(
+                () => input.style.backgroundColor = 'white',
+                1000
+            )
+        }
+    </script>
+
 </div>
 
 </body>
