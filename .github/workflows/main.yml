@@ -23,8 +23,8 @@ jobs:
           composer -v
           pwd
 
-      - name: Install dependencies
-      - run: composer install --optimize-autoloader --no-interaction --prefer-dist
+      - name: Install dependencies.
+        run: composer install --optimize-autoloader --no-interaction --prefer-dist
     
       - name: Update .env
         run: |
@@ -33,7 +33,7 @@ jobs:
           php artisan env:update APP_DEBUG false
           php artisan env:update APP_URL https://short.rezero.ir
 
-      - name: Copy files into release directory
+      - name: Copy files into release directory.
         run: |
           mkdir -p $APP_PATH
           rsync -av ./dist/ $APP_PATH --exclude .git/
