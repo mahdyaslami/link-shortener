@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    env:
+      APP_PATH: /var/www/short
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Show node version and current address.
+        run: |
+          php -v
+          composer -v
+          pwd
+
+      - name: Install dependencies
+      - run: composer install --optimize-autoloader --no-interaction --prefer-dist
+    
+      - name: Update .env
+        run: |
+          php artisan env:generate --force
+          php artisan env:update APP_ENV prod
+          php artisan env:update APP_DEBUG false
+          php artisan env:update APP_URL https://short.rezero.ir
+
+      - name: Copy files into release directory
+        run: |
+          mkdir -p $APP_PATH
+          rsync -av ./dist/ $APP_PATH --exclude .git/
+
+      - name: Change owner of directory to www-data
+        run: chown -R www-data:www-data $APP_PATH
