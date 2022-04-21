@@ -27,10 +27,10 @@ class LinkController extends Controller
             fn () => $request->link
         );
 
-        return url("links/{$slug}");
+        return url("goto/{$slug}");
     }
 
-    public function show($slug)
+    public function redirect($slug)
     {
         if (Cache::has($slug)) {
             return redirect(
@@ -38,5 +38,7 @@ class LinkController extends Controller
                 301
             );
         }
+
+        abort(404);
     }
 }
