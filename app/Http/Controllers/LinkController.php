@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -9,7 +10,7 @@ use PhpParser\Node\VarLikeIdentifier;
 
 class LinkController extends Controller
 {
-    const FIFTEEN_MIN = 15 * 60;
+    use WithFaker;
 
     public function create()
     {
@@ -22,16 +23,30 @@ class LinkController extends Controller
             'link' => 'required|url'
         ]);
 
-        $slug = Str::random(5);
+        $slug = $this->generateSlug();
 
-        Cache::remember(
-            $slug,
-            static::FIFTEEN_MIN,
-            fn () => $request->link
-        );
+        $this->rememberForFifteenMin($slug, $request->link);
 
         return redirect(
             route('links.show', $slug)
+        );
+    }
+
+    private function generateSlug()
+    {
+        $this->setUpFaker();
+
+        return Str::slug(
+            $this->faker()->realText(20)
+        );
+    }
+
+    private function rememberForFifteenMin($slug, $link)
+    {
+        Cache::remember(
+            $slug,
+            900,
+            fn () => $link
         );
     }
 
