@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use PhpParser\Node\VarLikeIdentifier;
 
 class LinkController extends Controller
 {
+    const FIFTEEN_MIN = 15 * 60;
+
     public function create()
     {
         return view('links.create');
@@ -23,7 +26,7 @@ class LinkController extends Controller
 
         Cache::remember(
             $slug,
-            15 * 60,
+            static::FIFTEEN_MIN,
             fn () => $request->link
         );
 
