@@ -64,7 +64,7 @@ class Env
 
     public static function replaceExample()
     {
-        return File::replace(
+        return File::copy(
             static::pathToExample(),
             static::path()
         );
