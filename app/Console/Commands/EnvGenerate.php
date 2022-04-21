@@ -47,6 +47,7 @@ class EnvGenerate extends Command
             Env::updateAppKey();
 
             $this->info('.env file generated sucssfully.');
+            $this->info('Application key set successfully.');
         } else {
             throw new Exception('.env file exists. if you want to regenerate use --force.');
         }

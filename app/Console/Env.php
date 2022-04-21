@@ -40,7 +40,7 @@ class Env
         );
     }
 
-    private function save($content)
+    private static function save($content)
     {
         return File::replace(
             static::path(),
