@@ -27,6 +27,7 @@ jobs:
 
       - name: Install dependencies.
         run: composer install --optimize-autoloader --no-interaction --prefer-dist
+        run: npm install
 
       - name: Update .env
         run: |
