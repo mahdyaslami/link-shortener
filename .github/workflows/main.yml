@@ -17,21 +17,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Show node version and current address.
+      - name: Show related versions and addresses.
         run: |
+          node -v
+          npm -v
           php -v
           composer -v
           pwd
 
       - name: Install dependencies.
         run: composer install --optimize-autoloader --no-interaction --prefer-dist
-    
+
       - name: Update .env
         run: |
           php artisan env:generate --force
           php artisan env:update APP_ENV prod
           php artisan env:update APP_DEBUG false
           php artisan env:update APP_URL https://short.rezero.ir
+
+      - name: Generate styles.
+        run: npm run prod
 
       - name: Copy files into release directory.
         run: |
