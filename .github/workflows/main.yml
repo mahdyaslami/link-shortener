@@ -28,7 +28,6 @@ jobs:
       - name: Install dependencies.
         run: |
           composer install --optimize-autoloader --no-interaction --prefer-dist
-          npm install
 
       - name: Update .env
         run: |
@@ -36,9 +35,6 @@ jobs:
           php artisan env:update APP_ENV prod
           php artisan env:update APP_DEBUG false
           php artisan env:update APP_URL https://short.rezero.ir
-
-      - name: Generate styles.
-        run: npm run prod
 
       - name: Copy files into release directory.
         run: |
