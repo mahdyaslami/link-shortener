@@ -16,8 +16,11 @@
 
 <body style="font-family: Vazirmatn;"
     class="bg-gray-200 pt-16 px-1">
+    <p class="text-right my-4 mx-auto max-w-lg">دقت کنید! لینک تولید شده فقط تا ۵ ساعت قابل استفاده است.</p>
+
   	<div class="my-4 mx-auto flex max-w-lg">
         @csrf
+
 
     	<input 
             id="short-link"
