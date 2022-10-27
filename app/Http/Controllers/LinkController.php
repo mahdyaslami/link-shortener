@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use PhpParser\Node\VarLikeIdentifier;
 
 class LinkController extends Controller
 {
@@ -25,7 +24,7 @@ class LinkController extends Controller
 
         $slug = $this->generateSlug();
 
-        $this->rememberForFifteenMin($slug, $request->link);
+        $this->remember($slug, $request->link);
 
         return redirect(
             route('links.show', $slug)
@@ -41,11 +40,11 @@ class LinkController extends Controller
         );
     }
 
-    private function rememberForFifteenMin($slug, $link)
+    private function remember($slug, $link)
     {
         Cache::remember(
             $slug,
-            900,
+            18000, // five hour
             fn () => $link
         );
     }
